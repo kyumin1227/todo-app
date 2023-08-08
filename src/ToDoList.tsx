@@ -1,21 +1,52 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+
+// react-hook-form 사용 전 코드
+
+// function ToDoList() {
+//   const [toDo, setToDo] = useState("");
+//   const [toDoError, setToDoError] = useState("");
+//   const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+//     const {
+//       currentTarget: { value },
+//     } = event;
+//     setToDoError("");
+//     setToDo(value);
+//   };
+//   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+//     event.preventDefault();
+//     if (toDo.length < 10) {
+//       return setToDoError("To Do should be longer");
+//     }
+//     console.log(toDo);
+//   };
+//   return (
+//     <div>
+//       <form onSubmit={onSubmit}>
+//         <input onChange={onChange} value={toDo} placeholder="Write a to do" />
+//         <button>Add</button>
+//         {toDoError === "" ? null : toDoError}
+//       </form>
+//     </div>
+//   );
+// }
 
 function ToDoList() {
-  const [toDo, setToDo] = useState("");
-  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const {
-      currentTarget: { value },
-    } = event;
-    setToDo(value);
-  };
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log(toDo);
-  };
+  // register = onChange, onSubmit을 대체
+  // watch = register 값을 추적 및 확인
+  const { register, watch } = useForm();
+  console.log(watch());
+  
+  
   return (
     <div>
-      <form onSubmit={onSubmit}>
-        <input onChange={onChange} value={toDo} placeholder="Write a to do" />
+      <form>
+        <input {...register("Email")} placeholder="Email" />
+        <input {...register("First-Name")} placeholder="First Name" />
+        <input {...register("Last-Name")} placeholder="Last Name" />
+        <input {...register("Username")} placeholder="Username" />
+        <input {...register("Password")} placeholder="Password" />
+        <input {...register("Password1")} placeholder="Password1" />
         <button>Add</button>
       </form>
     </div>
