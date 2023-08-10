@@ -1,43 +1,14 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { atom, useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
+import CreateToDo from "./CreateToDo";
+import { toDoState } from "./atoms";
+import ToDo from "./ToDo";
 
-
-interface IForm {
-  toDo: string;
-}
-
-interface IToDo {
-  text: string;
-  category: "TO_DO" | "DOING" | "DONE";
-  id: number;
-}
-
-const toDoState = atom<IToDo[]>({
-  key: "toDo",
-  default: [],
-})
 
 function ToDoList() {
-  const [toDos, setToDos] = useRecoilState(toDoState);
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: {errors}
-  } = useForm<IForm>();
-  const handleValid = (data: IForm) => {
-    console.log("add to do", data);
-    
-    // ...은 해당 배열의 엘리먼트만 복사해서 배열에 붙여넣음
-    setToDos((prev) => [{text: data.toDo, category: "TO_DO", id: Date.now()}, ...prev]);
-
-    // form을 submit 한 후 설정할 값
-    // 아래의 경우에는 toDo의 값이 제출 후에 "" 로 설정됨
-    setValue("toDo", "");
-    
-  }
+  const toDos = useRecoilValue(toDoState);
+  
   console.log(toDos);
 
 
@@ -45,13 +16,9 @@ function ToDoList() {
     <div>
       <h1>To Dos</h1>
       <hr />
-      <form onSubmit={handleSubmit(handleValid)}>
-        <input {...register("toDo", { required: "Please write a To Do" })} placeholder="Write a to do" />
-        <span>{errors.toDo?.message}</span>
-        <button>Add</button>
-      </form>
+        <CreateToDo /> 
       <ul>
-        {toDos.map(toDo => <li key={toDo.id}>{toDo.text}</li>)}
+        {toDos.map(toDo => <ToDo {...toDo} />)}
       </ul>
     </div>
   )
