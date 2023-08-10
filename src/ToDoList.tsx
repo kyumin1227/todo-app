@@ -45,11 +45,12 @@ function ToDoList() {
   } = useForm<IForm>();
   const handleValid = (data: IForm) => {
     console.log("add to do", data);
+    
+    // form을 submit 한 후 설정할 값
+    // 아래의 경우에는 toDo의 값이 제출 후에 "" 로 설정됨
+    setValue("toDo", "");
   }
 
-  // form을 submit 한 후 설정할 값
-  // 아래의 경우에는 toDo의 값이 제출 후에 "" 로 설정됨
-  setValue("toDo", "");
 
   return (
     <div>
