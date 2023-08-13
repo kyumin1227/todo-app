@@ -5,7 +5,19 @@ function ToDo({ text, category, id }: IToDo) {
 
     const setToDos = useSetRecoilState(toDoState);
     const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        console.log("I want to going ", event.currentTarget.name);
+        const { currentTarget: {name} } = event;
+        console.log("I want to going ", name);
+        setToDos((oldToDos) => {
+            const targetIndex = oldToDos.findIndex(toDo => toDo.id === id)
+            console.log(targetIndex);
+            const oldToDo = oldToDos[targetIndex];
+            const newToDo = { text, id, category: name };
+
+            console.log("oldToDo: ", oldToDo, "newToDo: ", newToDo);
+            
+            
+            return oldToDos;
+        })
     };
 
     return (
