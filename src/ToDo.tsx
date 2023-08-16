@@ -11,12 +11,13 @@ function ToDo({ text, category, id }: IToDo) {
             const targetIndex = oldToDos.findIndex(toDo => toDo.id === id)
             console.log(targetIndex);
             const oldToDo = oldToDos[targetIndex];
-            const newToDo = { text, id, category: name };
+            // as any로 typescript의 식별자 확인을 피할 수 있지만 권장되는 방법은 아님
+            const newToDo = { text, id, category: name as any };
 
             console.log("oldToDo: ", oldToDo, "newToDo: ", newToDo);
             
-            
-            return oldToDos;
+            // 타겟의 앞과 뒤에는 원본을 가져오고 타겟만 변경
+            return [...oldToDos.slice(0, targetIndex), newToDo, ...oldToDos.slice(targetIndex + 1)];
         })
     };
 
