@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { useSetRecoilState } from "recoil";
-import { toDoState } from "./atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { IToDo, categoryState, toDoState } from "./atoms";
 
 interface IForm {
   toDo: string;
@@ -8,14 +8,15 @@ interface IForm {
 
 function CreateToDo() {
     
-    const { register, handleSubmit, setValue, formState: {errors} } = useForm<IForm>();
-    const setToDos = useSetRecoilState(toDoState)
+  const { register, handleSubmit, setValue, formState: {errors} } = useForm<IForm>();
+  const setToDos = useSetRecoilState(toDoState);
+  const category = useRecoilValue(categoryState);
 
     const handleValid = (data: IForm) => {
     console.log("add to do", data);
     
     // ...은 해당 배열의 엘리먼트만 복사해서 배열에 붙여넣음
-    setToDos((prev) => [{text: data.toDo, category: "TO_DO", id: Date.now()}, ...prev]);
+    setToDos((prev) => [{text: data.toDo, category, id: Date.now()}, ...prev]);
 
     // form을 submit 한 후 설정할 값
     // 아래의 경우에는 toDo의 값이 제출 후에 "" 로 설정됨
