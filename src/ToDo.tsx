@@ -17,7 +17,11 @@ function ToDo({ text, category, id }: IToDo) {
             console.log("oldToDo: ", oldToDo, "newToDo: ", newToDo);
             
             // 타겟의 앞과 뒤에는 원본을 가져오고 타겟만 변경
-            return [...oldToDos.slice(0, targetIndex), newToDo, ...oldToDos.slice(targetIndex + 1)];
+            return [
+                ...oldToDos.slice(0, targetIndex), // 타겟의 앞부분 (원본)
+                newToDo, // 수정본
+                ...oldToDos.slice(targetIndex + 1), // 타겟의 뒷부분 (원본)
+            ];
         })
     };
 

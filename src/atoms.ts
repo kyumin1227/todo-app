@@ -16,11 +16,13 @@ export interface IToDo {
   id: number;
 }
 
+// 현재 지정 category를 저장하는 state로 enum값을 이용
 export const categoryState = atom<Categories>({
   key: "category",
   default: Categories.TO_DO,
 })
 
+// toDo들의 값을 저장하는 state
 export const toDoState = atom<IToDo[]>({
   key: "toDo",
   default: [],
@@ -29,6 +31,7 @@ export const toDoState = atom<IToDo[]>({
 // Selector는 atom을 받아서 변형
 export const toDoSelector = selector({
   key: "toDoSelector",
+  // toDos와 category의 값을 받아 해당 값이 변경되면 selector의 값이 자동으로 리렌더링
   get: ({ get }) => {
     const toDos = get(toDoState);
     const category = get(categoryState);
