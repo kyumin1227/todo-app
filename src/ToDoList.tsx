@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import CreateToDo from "./CreateToDo";
 import { Categories, categoryState, toDoSelector, toDoState } from "./atoms";
 import ToDo from "./ToDo";
@@ -8,7 +8,9 @@ import ToDo from "./ToDo";
 
 function ToDoList() {
   // const toDos = useRecoilValue(toDoState);
-  const toDos = useRecoilValue(toDoSelector);  
+  const toDosSelect = useRecoilValue(toDoSelector);  
+
+  const [toDos, setToDos] = useRecoilState(toDoState);
 
   const [category, setCategory] = useRecoilState(categoryState);
 
@@ -16,9 +18,27 @@ function ToDoList() {
     setCategory(event.currentTarget.value as any); 
   }
 
+  const saveBtnClick = () => {
+    const toDoString = JSON.stringify(toDos);
+    
+    localStorage.setItem("toDos", toDoString);
+  }
+
+  const loadBtnClick = () => {
+    const newToDos = localStorage.getItem("toDos");
+
+    if (newToDos) {
+      const parseNewToDos = JSON.parse(newToDos);
+      setToDos(parseNewToDos);
+    }
+    
+  }
+
   return (
     <div>
       <h1>To Dos</h1>
+      <button onClick={saveBtnClick}>Save</button>
+      <button onClick={loadBtnClick}>Load</button>
       <hr />
       <select value={category} onInput={onInput}>
         <option value={Categories.TO_DO}>To Do</option>
@@ -26,7 +46,7 @@ function ToDoList() {
         <option value={Categories.DONE}>Done</option>
       </select>
       <CreateToDo /> 
-      {toDos.map((toDo) => <ToDo {...toDo} id={toDo.id} />)}
+      {toDosSelect.map((toDo) => <ToDo {...toDo} key={toDo.id} />)}
     </div>
   )
 }
