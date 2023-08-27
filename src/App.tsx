@@ -1,28 +1,30 @@
-import {useState} from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { hourSelector, minuteState } from "./atoms";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 
 function App() {
 
-    const [minutes, setMinutes] = useRecoilState(minuteState);
-    // 첫번째 인자 : selector의 get 값
-    // 두번째 인자 : selector의 set을 설정하는 함수
-    const [hours, setHours] = useRecoilState(hourSelector);
+    const onDragEnd = () => {
 
-    const onMinutesChange = (event: React.FormEvent<HTMLInputElement>) => {
-        // +는 string을 number로 변경해줍니다.
-        setMinutes(+event.currentTarget.value);
     }
 
-    const onHoursChange = (event: React.FormEvent<HTMLInputElement>) => {
-        setHours(+event.currentTarget.value);
-    }
-    
-    return <div>
-        <input onChange={onMinutesChange} value={minutes} type="number" placeholder="Minutes" />
-        <input onChange={onHoursChange} value={hours} type="number" placeholder="Hours" />
-    </div>;
+    return <DragDropContext onDragEnd={onDragEnd}>
+        {/* 드래그 앤 드롭을 위해 영역을 감쌈 */}
+        {/* DagDropContext는 반드시 한 개 이상의 자식을 가져야 함 */}
+        <Droppable droppableId="one">
+            {/* 무언가를 드래그 드롭을 하는 영역 */}
+            {/* Droppable은 반드시 함수로 만들어진 한 개 이상의 자식을 가져야 함 */}
+            {() => <ul>
+                <Draggable draggableId="first" index={0}>
+                    {/* Droppable 영역 안에서 드래그 하는 영역 */}
+                    {/* Draggable은 반드시 함수로 만들어진 한 개 이상의 자식을 가져야 함 */}
+                    {() => <li>One</li>}
+                </Draggable>
+                <Draggable draggableId="second" index={1}>
+                    {() => <li>Two</li>}
+                </Draggable>
+            </ul>}
+        </Droppable>
+    </DragDropContext>;
 }
 
 export default App;
